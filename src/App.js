@@ -1,9 +1,8 @@
-import * as React from 'react';
-import MapGL, {
-  Popup
-} from 'react-map-gl';
+import * as React from "react";
+import MapGL, { Popup } from "react-map-gl";
 
-const TOKEN = "pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ"; // Set your mapbox token here
+const TOKEN =
+  "pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ"; // Set your mapbox token here
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +11,7 @@ class App extends React.Component {
       viewport: {
         latitude: 37.785164,
         longitude: -100,
-        zoom: 3.5,
+        zoom: 20,
         bearing: 0,
         pitch: 0
       },
@@ -21,11 +20,11 @@ class App extends React.Component {
   }
 
   _updateViewport = viewport => {
-    this.setState({viewport});
+    this.setState({ viewport });
   };
 
   _renderPopup() {
-    const {popupInfo} = this.state;
+    const { popupInfo } = this.state;
 
     return (
       popupInfo && (
@@ -35,7 +34,7 @@ class App extends React.Component {
           longitude={popupInfo.longitude}
           latitude={popupInfo.latitude}
           closeOnClick={false}
-          onClose={() => this.setState({popupInfo: null})}
+          onClose={() => this.setState({ popupInfo: null })}
         >
           <CityInfo info={popupInfo} />
         </Popup>
@@ -44,9 +43,10 @@ class App extends React.Component {
   }
 
   render() {
-    const {viewport} = this.state;
+    const { viewport } = this.state;
 
     return (
+      <div>
       <MapGL
         {...viewport}
         width="100%"
@@ -55,10 +55,9 @@ class App extends React.Component {
         onViewportChange={this._updateViewport}
         mapboxApiAccessToken={TOKEN}
       >
-
-       // {this._renderPopup()}
-
+        // {this._renderPopup()}
       </MapGL>
+      </div>
     );
   }
 }
