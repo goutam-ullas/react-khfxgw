@@ -9,37 +9,9 @@ import MapGL, {
   GeolocateControl
 } from 'react-map-gl';
 
-const TOKEN = ''; // Set your mapbox token here
+const TOKEN = 'pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ'; // Set your mapbox token here
 
-const geolocateStyle = {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  padding: '10px'
-};
-
-const fullscreenControlStyle = {
-  position: 'absolute',
-  top: 36,
-  left: 0,
-  padding: '10px'
-};
-
-const navStyle = {
-  position: 'absolute',
-  top: 72,
-  left: 0,
-  padding: '10px'
-};
-
-const scaleControlStyle = {
-  position: 'absolute',
-  bottom: 36,
-  left: 0,
-  padding: '10px'
-};
-
-export default class App extends Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,10 +28,6 @@ export default class App extends Component {
 
   _updateViewport = viewport => {
     this.setState({viewport});
-  };
-
-  _onClickMarker = city => {
-    this.setState({popupInfo: city});
   };
 
   _renderPopup() {
@@ -93,29 +61,12 @@ export default class App extends Component {
         onViewportChange={this._updateViewport}
         mapboxApiAccessToken={TOKEN}
       >
-        <Pins data={CITIES} onClick={this._onClickMarker} />
 
-        {this._renderPopup()}
+       // {this._renderPopup()}
 
-        <div style={geolocateStyle}>
-          <GeolocateControl />
-        </div>
-        <div style={fullscreenControlStyle}>
-          <FullscreenControl />
-        </div>
-        <div style={navStyle}>
-          <NavigationControl />
-        </div>
-        <div style={scaleControlStyle}>
-          <ScaleControl />
-        </div>
-
-        <ControlPanel containerComponent={this.props.containerComponent} />
       </MapGL>
     );
   }
 }
 
-export function renderToDom(container) {
-  render(<App />, container);
-}
+export default App;
