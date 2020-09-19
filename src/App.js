@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import MapGL, { Marker, Popup } from "react-map-gl";
 import {
   Slider,
   SliderInput,
@@ -17,7 +17,7 @@ import { Document } from "react-pdf/dist/esm/entry.parcel";
 import "./style.css";
 import mapboxgl from "mapbox-gl";
 //import "mapbox-gl/dist/mapbox-gl.css";
-
+const TOKEN = 'pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ';
 mapboxgl.accessToken =
   "pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ";
 
@@ -25,6 +25,15 @@ class Application extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      viewport: {
+        latitude: 17.3755,
+        longitude: 78.4735,
+        zoom: 19,
+        pitch: 60,
+        attributionControl: false,
+        interactive: false
+      },
+      popupInfo: null,
       mapHeight: window.innerHeight,
       mapWidth: window.innerWidth,
       lng: 78.4735,
@@ -82,7 +91,7 @@ class Application extends React.Component {
     this.updateDimensions();
     window.addEventListener("resize", this.updateDimensions);
 
-    this.map = new mapboxgl.Map({
+    /*this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: "mapbox://styles/nnikita/ckd7n4m5b04e31ip8ai5a1xfj",
       center: [this.state.lng, this.state.lat],
@@ -90,11 +99,11 @@ class Application extends React.Component {
       pitch: 60,
       attributionControl: false,
       interactive: false
-    });
+    });*/
 
-    this.map.scrollZoom.disable();
+    /*this.map.scrollZoom.disable();
     this.map.doubleClickZoom.disable();
-    this.map.dragPan.enable();
+    this.map.dragPan.enable();*/
     smoothscroll.polyfill();
     document.addEventListener("mousedown", this.handleClickOutside);
     var deltaDistance = 100;
@@ -104,7 +113,7 @@ class Application extends React.Component {
       return t * (2 - t);
     }
 
-    this.map.on("load", () => {
+    /*this.map.on("load", () => {
       this.map.getCanvas().focus();
 
       window.addEventListener(
@@ -137,9 +146,9 @@ class Application extends React.Component {
         },
         true
       );
-    });
+    });*/
 
-    this.map.on("click", "gods", e => {
+    /*this.map.on("click", "gods", e => {
       var features = this.map.queryRenderedFeatures(e.point, {
         layers: ["gods"]
       });
@@ -159,15 +168,15 @@ class Application extends React.Component {
           .addTo(this.map);
         console.log(Name);
       }
-    });
+    });*/
 
-    this.map.on("move", () => {
+    /*this.map.on("move", () => {
       this.setState({
         lng: this.map.getCenter().lng.toFixed(4),
         lat: this.map.getCenter().lat.toFixed(4),
         zoom: this.map.getZoom().toFixed(2)
       });
-    });
+    });*/
   }
 
   indexFunction() {
@@ -298,22 +307,43 @@ class Application extends React.Component {
     }));
   }
 
+  _updateViewport = viewport => {
+    this.setState({ viewport });
+  };
+
+  _renderPopup() {
+    const { popupInfo } = this.state;
+
+    return (
+      popupInfo && (
+        <Popup
+          tipSize={5}
+          anchor="top"
+          longitude={popupInfo.longitude}
+          latitude={popupInfo.latitude}
+          closeOnClick={false}
+          onClose={() => this.setState({ popupInfo: null })}
+        >
+          <CityInfo info={popupInfo} />
+        </Popup>
+      )
+    );
+  }
+
   render() {
+    const { viewport } = this.state;
     return (
       <div>
-        <div
-          ref={el => (this.mapContainer = el)}
-          style={{
-            position: "fixed",
-            left: 0,
-            right: 0,
-            top: 0,
-            height: this.state.mapHeight,
-            width: this.state.mapWidth
-          }}
+        <MapGL
+          {...viewport}
+          width="100%"
+          height="100%"
+          mapStyle="mapbox://styles/nnikita/ckd7n4m5b04e31ip8ai5a1xfj"
+          onViewportChange={this._updateViewport}
+          mapboxApiAccessToken={TOKEN}
         >
-          <div ref={el => (this.popUpRef = el)} />
-        </div>
+         // {this._renderPopup()}
+        </MapGL>
         <div
           style={{
             fontSize: 24,
