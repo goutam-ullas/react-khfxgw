@@ -1,15 +1,9 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {render} from 'react-dom';
 import MapGL, {
-  Popup,
-  NavigationControl,
-  FullscreenControl,
-  ScaleControl,
-  GeolocateControl
+  Popup
 } from 'react-map-gl';
 
-const TOKEN = 'pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ'; // Set your mapbox token here
+const TOKEN = "pk.eyJ1Ijoibm5pa2l0YSIsImEiOiJjazdtYzV2MDYwMzliM2dubnVubnJuMTRrIn0.6KqRhtWgMc_nGwMPAqmstQ"; // Set your mapbox token here
 
 class App extends React.Component {
   constructor(props) {
