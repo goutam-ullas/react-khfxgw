@@ -51,7 +51,7 @@ class App extends React.Component {
         {...viewport}
         width="100%"
         height="100%"
-        mapStyle="mapbox://styles/mapbox/dark-v9"
+        mapStyle="mapbox://styles/nnikita/ckd7n4m5b04e31ip8ai5a1xfj"
         onViewportChange={this._updateViewport}
         mapboxApiAccessToken={TOKEN}
       >
